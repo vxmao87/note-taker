@@ -21,4 +21,4 @@ Though I was only tasked with creating the backend, I have learned a great deal 
 
 ![image](Develop/public/assets/images/note-taker.png)
 
-Access the project on Heroku [here]().
+Access the project on Heroku [here](https://gentle-plateau-55280.herokuapp.com/).
