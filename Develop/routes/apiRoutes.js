@@ -10,22 +10,40 @@ module.exports = function(app) {
         res.sendFile(path.join(__dirname, "../db/db.json"));
     });
 
-    // POST - adds a new note
+    // POST - adds a new note, and adds an ID onto that note
     app.post("/api/notes", function(req, res) {
         const note = req.body;
-        console.log(note);
         noteData.push(note);
-        console.log(noteData);
-        fs.writeFile("./db/db.json", JSON.stringify(noteData), function(err) {
-            if (err) throw err;
-            console.log("db.json file successfully written!");
-        })
-        res.json(note);
+
+        writeFullFile(noteData);
+        res.json(noteData);
     });
 
     // DELETE - deletes a selected note using the ID associated with the note
     app.delete("/api/notes/:id", function(req, res) {
-        
+        const noteID = req.params.id;
+        for(var i = 0; i < noteData.length; i++) {
+            if(noteID == noteData[i].id) {
+                noteData.splice(i, 1);
+            }
+        }
+        writeFullFile(noteData);
+        res.json(noteData);
+    });     
+}
 
+// Adds an ID tag to each note
+function addID(notes) {
+    for(var i = 0; i < notes.length; i++) {
+        notes[i].id = i + 1;
+    }
+}
+
+// Calls the addID function, then writes the JSON file
+function writeFullFile(noteData) {
+    addID(noteData);
+    fs.writeFile("./db/db.json", JSON.stringify(noteData), function(err) {
+        if (err) throw err;
+        console.log("db.json file successfully written!");
     });
 }
